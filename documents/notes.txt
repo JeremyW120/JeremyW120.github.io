@@ -1,0 +1,18 @@
+First time only:
+Set up SSH Key:
+ssh-keygen -t ed25519 -c "JeremyW120.github.io"
+
+View public key:
+cat ~/.ssh/id_ed25519.pub
+
+Get to website directory:
+cd directory_name
+
+How to push changes to repository:
+gid add -A
+git commit -m "message describing change"
+git push origin main
+
+If working from more than one device:
+before each session:
+git pull
