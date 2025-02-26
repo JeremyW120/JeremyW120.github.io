@@ -37,8 +37,8 @@
 			
 			class RuleError extends Error {
 				constructor(message){
+					super(message);
 					this.name = "Rule Error";
-					this.message = "Slot is ";
 				}
 			}
 
@@ -80,20 +80,19 @@
 				// TODO: Add try/catch
 				try{
 					if(slot == "")
-						throw "empty.";
+						throw new RuleError("Slot is empty.");
 					if(isNaN(slot))
-						throw "not a number.";	
+						throw new RuleError("Slot is not a number.");	
 					if(slot < 1)
-						throw "too low.";		
+						throw new RuleError("Slot isn't between 1 and 6.");		
 					if(slot > 6)
-						throw "too high.";	
+						throw new RuleError("Slot isn't between 1 and 6.");	
 					
 					return true;
 						
 				}
 				catch(err){
-					alert("Slot is " + err);
-					return false;
+					alert(err.name + ": " + err.message);
 				}
 				
 			}
