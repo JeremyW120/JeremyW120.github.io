@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="HTML, Javascript, Puzzle">
+    <meta name="viewport" content="width=device width, initial-scale=1.0">
+    <title>DOM Puzzle</title>
+
+    <style>
+        /* NOTE: Do NOT modify this stylesheet */
+        #puzzle { 
+            width: 500px; 
+            height: 500px; 
+            border: 5px solid black;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <!-- NOTE: Do NOT modify the body or div -->
+
+    <div id='puzzle'></div>
+
+    <script>
+        // All puzzle code must be implemented here
+        function startup(){
+            const h1 = document.createElement('h1');
+            h1.textContent = "DOM Puzzle";
+            document.body.insertBefore(h1, document.body.firstChild);
+
+            const link = document.createElement('a');
+            link.setAttribute('href', 'index.html')
+            link.textContent = "Return to Portfolio";
+            document.body.insertBefore(link, document.body.firstChild);
+
+            document.getElementById('puzzle').style.backgroundColor = '#7338A0';
+
+            document.getElementById('puzzle').addEventListener("mouseenter", event =>{
+                document.getElementById('puzzle').style.borderColor = "yellow";
+            });
+            document.getElementById('puzzle').addEventListener("mouseleave", event =>{
+                document.getElementById('puzzle').style.borderColor = "black";
+            });
+
+            const d = document.createElement('p');
+            d.textContent = "This is a puzzle created entirely with JavaScript.";
+            document.body.appendChild(d);
+        }
+
+        function buttonsFour() {
+            
+            const sp = document.createElement('div');
+            sp.classList.add('spacer');
+            document.getElementById('puzzle').appendChild(sp);
+
+
+            const d1 = document.createElement('div');
+            d1.setAttribute('id', 'row1');
+            sp.appendChild(d1);
+            const d2 = document.createElement('div');
+            d2.setAttribute('id', 'row2');
+            sp.appendChild(d2);
+
+            d1.style.width = '250px';
+            d2.style.width = '250px';
+
+            const b1 = document.createElement('button');
+
+            // b1.style.width='250px';
+            // b1.style.height='250px';
+            
+
+            const b2 = document.createElement('button');
+            //b1.setAttribute('class', '4buttons');
+            //b2.setAttribute('class', '4buttons');
+            
+
+            document.getElementById('row1').appendChild(b1);
+            document.getElementById('row1').appendChild(b2);
+
+            const b3 = document.createElement('button');
+            const b4 = document.createElement('button');
+            //b3.setAttribute('class', '4buttons');
+            //b4.setAttribute('class', '4buttons');
+            document.getElementById('row2').appendChild(b3);
+            document.getElementById('row2').appendChild(b4);
+
+            const style = document.querySelector('style');
+            style.textContent += `
+            .fourbuttons { 
+                width: 125px; 
+                height: 125px;
+                }`;
+
+            b1.classList.add('fourbuttons');
+            b2.classList.add('fourbuttons');
+            b3.classList.add('fourbuttons');
+            b4.classList.add('fourbuttons');
+
+            b1.style.backgroundColor = '#9455F4';
+            b2.style.backgroundColor = '#4A2B74';
+            b3.style.backgroundColor = '#594492';
+            b4.style.backgroundColor = '#854DDC';
+        }
+
+        function buttons100(){
+            const s1 = document.createElement('div');
+            s1.setAttribute('id', 's1');
+            document.getElementById('puzzle').appendChild(s1);
+            const s2 = document.createElement('div');
+            s2.setAttribute('id', 's2');
+            document.getElementById('puzzle').appendChild(s2);
+
+            const style = document.querySelector('style');
+            style.textContent += `
+            .spacer { 
+                width: 250px; 
+                height: 250px;
+                float: left;
+                }
+            .button100 {
+                width: 25px;
+                height: 24px;
+                background-color: #C39CFE;
+                }
+            .clicked {
+                background-color: #C39CFE;
+                }`;
+            s1.classList.add('spacer');
+            s2.classList.add('spacer');
+
+            const b100 = document.createElement('div');
+            b100.setAttribute('id', 'b100');
+            document.getElementById('puzzle').appendChild(b100);
+
+            b100.style.width = '250px';
+            b100.style.height = '250px';
+            b100.style.float = 'left';
+            
+            for(var i = 0; i < 100; i++){
+                const b = document.createElement('button');
+                b.classList.add("button100");
+                b.setAttribute('onclick', 'changeColor(this)');
+                b100.appendChild(b);
+            }
+        }
+
+        function changeColor(element){
+            element.style.backgroundColor = "#4A2574";
+            if(element.previousElementSibling !== null){
+                element.previousElementSibling.style.backgroundColor = "#FF9E00";
+            }
+            if(element.nextElementSibling !== null){
+                element.nextElementSibling.style.backgroundColor = "#FF9E00";
+            }
+        }
+
+        startup();
+        buttonsFour();
+        buttons100();
+    </script>
+</body>
+</html>
