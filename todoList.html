@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Persistent To-Do List</title>
+</head>
+<body>
+    <a href="index.html">Return to Portfolio</a>
+    <h1>Persistent To-Do List</h1>
+    <h2>Light settings</h2>
+    <button onclick="lightMode()" id="light">Light Mode</button>
+    <button onclick="darkMode()" id="dark">Dark Mode</button>
+    <button onclick="saveSettings()">Save</button>
+    <br>
+
+    <h2>To-Do List</h2>
+    <label for="listItem">Enter list item:</label>
+    <input type="text" id="listItem">
+    <button onclick="addToList()">Add Item</button>
+    <br><br>
+    <label for="removeInput">Item number to be removed: </label>
+    <input type="number" id="removeInput">
+    <button onclick="removeItem()">Remove</button>
+    <br><br>
+    <button onclick="deleteAll()">Delete All</button>
+
+    <p id="persistentList"></p>
+
+    <script>
+      let mode;
+      function startup(){
+        updateList();
+        mode = getCookie("mode");
+        console.log(mode);
+
+        if(mode === "light")
+          lightMode();
+        else if(mode === "dark")
+          darkMode();
+      }
+      function getCookie(name) {
+				const cookies = document.cookie.split(';');
+				for(let i = 0; i < cookies.length; i++){
+					let cookie = cookies[i].trim();
+					if(cookie.startsWith(name + '='))
+					return cookie.substring(name.length + 1);
+				}
+			}
+        function lightMode(){
+          document.body.style.backgroundColor = "#ffffff";
+          document.body.style.color = "#000000";
+
+          mode = "Light";
+
+        }
+        function darkMode(){
+          document.body.style.backgroundColor = "#000000";
+          document.body.style.color = "#ffffff";
+
+          mode = "dark";
+        }
+
+        function saveSettings(){
+          //let user = document.getElementById("username");
+          let date = new Date();
+				  date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
+				   let expires =  date.toUTCString();
+				   let cookiestr = "mode=" + mode + "; expires=" + expires + "; path=/";
+           document.cookie = cookiestr;
+           console.log(cookiestr);
+        }
+
+        function addToList(){
+            let item = document.getElementById('listItem').value;
+            const newItem = {
+                text: item
+            };
+            //console.log(JSON.stringify(newItem));
+
+            let list = localStorage.getItem('todoList');
+            list = list ? list + "," : "";
+            list += JSON.stringify(newItem);
+
+            list = list.replaceAll('[', '');
+            list = list.replaceAll(']', '');
+
+            list = '[' + list + ']';
+            //console.log(list);
+            localStorage.setItem('todoList', list);
+            updateList();
+
+        }
+
+        function updatePage(list) {
+          console.log(list);
+          if (list) {
+            objList = JSON.parse(list);
+            let newList = "";
+
+            //console.log(objList);
+            //console.log(JSON.stringify(objList));
+
+            for (let i = 0; i < objList.length; i++) {
+              newList +=
+                (i + 1) + ". " + objList[i].text + "<br>";
+            }
+
+            document.getElementById('persistentList').innerHTML = newList;
+          }
+        }
+
+        function updateList(list = localStorage.getItem('todoList')){
+            //let list = localStorage.getItem('todoList');
+          list = list.trim();
+          //console.log(list);
+         // updatePage(JSON.stringify(list));
+            updatePage(list);
+        }
+
+        function removeItem() {
+          let list = localStorage.getItem('todoList');
+
+          //console.log(list);
+          objList = JSON.parse(list);
+          let item = parseInt(document.getElementById('removeInput').value);
+          objList.splice((item - 1), 1);
+
+          if (objList.length === 0) {
+            localStorage.setItem('todoList', '');
+            document.getElementById('persistentList').innerHTML = '';
+          } else {
+
+            let updatedListAsString = JSON.stringify(objList);
+            console.log(updatedListAsString);
+
+            localStorage.setItem('todoList', updatedListAsString);
+            updatePage(updatedListAsString);
+          }
+
+
+           // console.log(updatedListAsString);
+
+
+            // let item = document.getElementById('removeInput').value;
+            // if(item > 0 && item < objList.length)
+            //     objList.splice(1, item);
+            // objList = JSON.stringify(objList);
+            // objList.replace('[', '');
+            // objList.replace(']', '');
+            // updateList(objList);
+        }
+
+        function deleteAll(){
+            localStorage.setItem('todoList', '');
+            updateList();
+        }
+
+        // async function getQuote(){
+        //   try{
+        //     let response = await fetch('https://api.quotable.io/random');
+        //     console.log(response);
+        //   }
+        //
+        //   catch(error){
+        //     console.log("Failed to get quote");
+        //   }
+        // }
+        //deleteAll();
+        startup();
+
+    </script>
+</body>
+</html>
